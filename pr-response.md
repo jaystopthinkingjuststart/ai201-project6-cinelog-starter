@@ -12,8 +12,8 @@
 **How I verified:** ran a manual script against an in memory sqlite db that added the same film to a user's watchlist twice. the first call succeeded and returned an entry, the second call raised `AlreadyInWatchlistError` with the expected message instead of creating a second row. also reran `pytest tests/ -v` to confirm the existing 4 tests still pass. a dedicated automated test for this comes in comment 3's file, though the milestone only asked for a nonexistent film test there.
 
 ## Comment 3 — Missing test
-**What I did:**
-**How I verified:**
+**What I did:** created tests/test_watchlist.py and wrote `test_add_to_watchlist_nonexistent_film_raises`, modeled directly on `test_add_to_collection_nonexistent_film_raises` in tests/test_collection.py. it reuses the same `app` and `sample_user` fixtures (no `sample_film` fixture is needed since the whole point of the test is that the film does not exist), calls `add_to_watchlist()` with a fake uuid, and asserts that `FilmNotFoundError` is raised.
+**How I verified:** ran `pytest tests/test_watchlist.py -v` and confirmed the new test passes on its own. then ran `pytest tests/ -v` and confirmed all 5 tests across both files pass together, so the new file does not interfere with the existing collection tests.
 
 ## Comment 4 — Default visibility
 **My position:**
